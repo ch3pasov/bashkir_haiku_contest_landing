@@ -13,7 +13,7 @@ services:
       - ./html/:/usr/share/nginx/html/:ro
       - ./nginx/conf/:/etc/nginx/conf.d/:ro
       - ./nginx/ssl/cert.pem:/etc/ssl/certs/cert.pem:ro
-      - ./nginx/ssl/privkey.pem:/etc/ssl/private/privkey.pem:ro
+      - ./nginx/ssl/key.pem:/etc/ssl/private/key.pem:ro
     restart: unless-stopped
 
 networks:
