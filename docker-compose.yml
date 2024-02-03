@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  nginx:
+  nginx_bashkirhaiku:
     image: nginx:latest
     container_name: bashkirhaiku-nginx-container
     ports:
