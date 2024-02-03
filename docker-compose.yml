@@ -7,8 +7,8 @@ services:
       - shared-network
     container_name: bashkirhaiku-nginx-container
     ports:
-      - "80:80"
-      - "443:443"
+      - "82:80"
+      - "445:443"
     volumes:
       - ./html/:/usr/share/nginx/html/:ro
       - ./nginx/conf/:/etc/nginx/conf.d/:ro
