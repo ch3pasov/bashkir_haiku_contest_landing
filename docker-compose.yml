@@ -1,8 +1,10 @@
 version: '3.8'
 
 services:
-  nginx_bashkirhaiku:
+  nginx:
     image: nginx:latest
+    networks:
+      - shared-network
     container_name: bashkirhaiku-nginx-container
     ports:
       - "80:80"
@@ -13,3 +15,7 @@ services:
       - ./nginx/ssl/cert.pem:/etc/ssl/certs/cert.pem:ro
       - ./nginx/ssl/privkey.pem:/etc/ssl/private/privkey.pem:ro
     restart: unless-stopped
+
+networks:
+  shared-network:
+    external: true
