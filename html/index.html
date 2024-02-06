@@ -153,6 +153,23 @@
             margin: 0 auto; /* Автоматический отступ справа и слева для центрирования */
         }
 
+        .a2a_kit a {
+            margin-top: 10px; /* Отступ сверху для каждой кнопки */
+            margin-bottom: 10px; /* Отступ снизу для каждой кнопки */
+            display: inline-block; /* Сделать кнопки блочно-строчными элементами */
+        }
+
+        .a2a_kit {
+            text-align: center; /* Центрирование кнопок внутри контейнера */
+            line-height: 0; /* Убрать дополнительный вертикальный пробел */
+            display: inline-block; /* Блочное отображение для центрирования внутри футера */
+            padding: 10px 0; /* Вертикальные отступы для контейнера кнопок */
+        }
+
+        .footer {
+            padding: 20px 0; /* Внутренний отступ для всего футера */
+        }
+
     </style>
 </head>
 <body>
@@ -226,7 +243,7 @@
                 <p>Спасибо всем, кто распространял этот конкурс, сделав его веселее:</p>
                 <a href="https://t.me/korolyokk">Корольку</a> | 
                 <a href="https://www.instagram.com/b0zhe/">Динару Мансурову</a> | 
-                <a href="https://t.me/ch_an">и мне</a>
+                <a href="https://t.me/ch_an">и&nbsp;мне</a>
                 <p class="footer-disclaimer">
                     Пожалуйста, помоги распространить информацию о конкурсе. <a href="https://t.me/drakedoin">Дай мне знать</a>, и я добавлю тебя в список благодарностей.
                 </p>
@@ -242,7 +259,6 @@
                     <a class="a2a_button_threads"></a>
                     <a class="a2a_button_viber"></a>
                     <a class="a2a_button_facebook"></a>
-                    <a class="a2a_button_reddit"></a>
                 </div>
                 <script>
                 var a2a_config = a2a_config || {};
