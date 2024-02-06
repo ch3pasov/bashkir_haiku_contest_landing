@@ -17,6 +17,14 @@
     <title>Башкирские хокку | Поэтический конкурс</title>
     <!-- Подключаем Bootstrap CSS для адаптивности -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" > (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)}; m[i].l=1*new Date(); for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }} k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}) (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym"); ym(96386223, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true }); </script> <noscript><div><img src="https://mc.yandex.ru/watch/96386223" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+
+    <script type="text/javascript" src="https://vk.com/js/api/share.js?95" charset="windows-1251"></script>
+
+    <!-- Стилевик -->
     <style>
         body {
             padding-top: 20px;
@@ -99,36 +107,51 @@
         background-color: #f9f9f9; /* Цвет фона футера */
         padding: 20px 0; /* Внутренний отступ */
         border-top: 1px solid #eaeaea; /* Линия сверху */
-    }
+        }
 
-    .footer a {
-        color: #6DAE81; /* Цвет ссылок */
-        text-decoration: none; /* Убираем подчеркивание */
-        margin: 0 10px; /* Отступы вокруг ссылок */
-    }
+        .footer a {
+            color: #6DAE81; /* Цвет ссылок */
+            text-decoration: none; /* Убираем подчеркивание */
+            margin: 0 10px; /* Отступы вокруг ссылок */
+        }
 
-    .footer a:hover {
-        text-decoration: underline; /* Подчеркивание при наведении */
-    }
+        .footer a:hover {
+            text-decoration: underline; /* Подчеркивание при наведении */
+        }
 
-    .haiku-quote {
-        text-align: center; /* Выравнивание по центру */
-        margin-top: 20px; /* Отступ сверху */
-        margin-bottom: 20px; /* Отступ снизу */
-        padding: 10px; /* Внутренние отступы */
-        font-style: italic; /* Курсивное начертание текста */
-        border-left: none; /* Убираем левую линию, если она не нужна */
-    }
+        .haiku-quote {
+            text-align: center; /* Выравнивание по центру */
+            margin-top: 20px; /* Отступ сверху */
+            margin-bottom: 20px; /* Отступ снизу */
+            padding: 10px; /* Внутренние отступы */
+            font-style: italic; /* Курсивное начертание текста */
+            border-left: none; /* Убираем левую линию, если она не нужна */
+        }
 
-    /* Дополнительно можно добавить стили для украшения цитаты, например: */
-    .haiku-quote::before {
-        content: open-quote; /* Открывающая кавычка */
-    }
+        /* Дополнительно можно добавить стили для украшения цитаты, например: */
+        .haiku-quote::before {
+            content: open-quote; /* Открывающая кавычка */
+        }
 
-    .haiku-quote::after {
-        content: close-quote; /* Закрывающая кавычка */
-    }
+        .haiku-quote::after {
+            content: close-quote; /* Закрывающая кавычка */
+        }
 
+        .footer-disclaimer {
+            color: #6c757d; /* Серый цвет текста */
+            font-size: 0.9em; /* Меньший размер шрифта */
+            margin-top: 20px; /* Отступ сверху */
+        }
+
+        .footer-disclaimer a {
+            margin: 0 0;
+        }
+
+        .a2a_kit {
+            text-align: center; /* Выравнивает содержимое элемента по центру */
+            display: table; /* Задаёт блочно-табличное отображение, чтобы центрировать в контейнере */
+            margin: 0 auto; /* Автоматический отступ справа и слева для центрирования */
+        }
 
     </style>
 </head>
@@ -167,7 +190,10 @@
                     Один участник может подать максимум 5 хокку, чтобы мы не замучились выбирать победителя. Выкладывайте одно хокку одним комментарием. Не пишите комментарии от лица телеграм-канала.
                 </li>
                 <li>
-                    Всего будет 3 победителя. Три члена жюри выберут трёх разных победителей и 3 хокку по своему усмотрению. Каждый выберет своего победителя, но разных.
+                    Пожалуйста, не пишите в комментариях ничего, кроме хокку. Любой оффтоп можете смело писать <a href="https://t.me/ch_an/1885">вот тут</a>.
+                </li>
+                <li>
+                    Всего будет 3 победителя. Три члена жюри выберут трёх разных победителей по своему усмотрению.
                 </li>
                 <li>
                     Победители получат физические призы. Для передачи призов мы свяжемся с вами в телеграме. Мы готовы организовать пересылку приза внутри России и Сербии. Если вы из другой страны — что-нибудь придумаем.
@@ -191,18 +217,39 @@
         <!-- Эмбед с телеграм-комментариями -->
         <div class="telegram-comments">
             <h2>Ваши хокку писать сюда:</h2>
-            <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-discussion="ch_an/1779" data-comments-limit="10" data-colorful="1" data-color="6DAE81" data-dark-color="72E350"></script>
+            <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-discussion="ch_an/1886" data-comments-limit="10" data-colorful="1" data-color="6DAE81" data-dark-color="72E350"></script>
         </div>
 
         <!-- Футер -->
         <footer class="footer">
             <div class="container text-center">
-                <p>Спасибо всем, кто помог этому конкурсу произойти:</p>
+                <p>Спасибо всем, кто распространял этот конкурс, сделав его веселее:</p>
                 <a href="https://t.me/korolyokk">Корольку</a> | 
                 <a href="https://www.instagram.com/b0zhe/">Динару Мансурову</a> | 
-                <a href="URL_организации_1">Организация 1</a> |
                 <a href="https://t.me/ch_an">и мне</a>
-            </div>
+                <p class="footer-disclaimer">
+                    Пожалуйста, помоги распространить информацию о конкурсе. <a href="https://t.me/drakedoin">Дай мне знать</a>, и я добавлю тебя в список благодарностей.
+                </p>
+                <!-- AddToAny BEGIN -->
+                <div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="https://bashkirhaiku.anatoliy.ch/">
+                    <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+                    <a class="a2a_button_telegram"></a>
+                    <a class="a2a_button_odnoklassniki"></a>
+                    <a class="a2a_button_x"></a>
+                    <a class="a2a_button_vk"></a>
+                    <a class="a2a_button_mastodon"></a>
+                    <a class="a2a_button_whatsapp"></a>
+                    <a class="a2a_button_threads"></a>
+                    <a class="a2a_button_viber"></a>
+                    <a class="a2a_button_facebook"></a>
+                    <a class="a2a_button_reddit"></a>
+                </div>
+                <script>
+                var a2a_config = a2a_config || {};
+                a2a_config.locale = "ru";
+                </script>
+                <script async src="https://static.addtoany.com/menu/page.js"></script>
+                <!-- AddToAny END -->
         </footer>
 
         
