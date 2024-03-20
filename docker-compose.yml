@@ -6,9 +6,13 @@ services:
     container_name: bashkirhaiku-nginx-container
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - ./html/:/usr/share/nginx/html/:ro
       - ./nginx/conf/:/etc/nginx/conf.d/:ro
-      - ./nginx/ssl/:/etc/ssl/:ro
     restart: unless-stopped
+    networks:
+      - common_network
+
+networks:
+  common_network:
+    external: true
