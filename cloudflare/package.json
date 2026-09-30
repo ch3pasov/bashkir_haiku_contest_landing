@@ -1,0 +1,14 @@
+{
+  "name": "bashkir-haiku-contest-landing-cloudflare",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "check:build": "wrangler versions upload --dry-run",
+    "deploy": "node scripts/deploy.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "4.145.0"
+  }
+}

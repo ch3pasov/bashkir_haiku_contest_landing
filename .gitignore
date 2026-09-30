@@ -1,3 +1,16 @@
 nginx/ssl/*
 .DS_Store
 ```
+
+# Cloudflare build output and local credentials.
+cloudflare/node_modules/
+cloudflare/public/
+cloudflare/dist/
+.wrangler/
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+
+cloudflare/deployment.json

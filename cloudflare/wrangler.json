@@ -1,0 +1,18 @@
+{
+  "name": "anatoliy-bashkir-haiku",
+  "account_id": "5af2ac3e2701b218d0ddd15aadd971e0",
+  "compatibility_date": "2026-09-30",
+  "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "bashkirhaiku.anatoliy.ch",
+      "custom_domain": true,
+      "zone_id": "53dc6500600ba4e618a40e84c2c089ad"
+    }
+  ],
+  "assets": {
+    "directory": "./public",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  }
+}

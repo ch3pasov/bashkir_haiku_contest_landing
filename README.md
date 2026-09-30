@@ -21,3 +21,22 @@ python3 -m http.server 8000 --directory html
 ```
 
 Then open <http://localhost:8000>.
+
+## Публикация в Cloudflare
+
+Рабочий сайт: https://bashkirhaiku.anatoliy.ch. Исходные страницы редактируются в `html/`.
+Каждый push в `main` автоматически проверяет сборку и публикует новую версию
+существующего Worker `anatoliy-bashkir-haiku` через GitHub Actions. Pull requests проверяются
+без публикации; ручной запуск доступен в Actions → Publish to Cloudflare → Run workflow.
+
+GitHub Secret `CLOUDFLARE_API_TOKEN` содержит отдельный токен с правом Workers Editor
+для аккаунта владельца. Значение токена не хранится в файлах репозитория.
+Публикация использует `wrangler versions upload` и `wrangler versions deploy`:
+DNS, домены, VPS и другие Workers не изменяются.
+
+Для проверки локально: `cd cloudflare`, затем `npm ci`, `npm test`, `npm run check:build`.
+Настройки — `cloudflare/wrangler.json`, команды CI — `.github/workflows/cloudflare.yml`.
+В Actions сохраняются commit SHA, опубликованная версия и прежняя версия для отката.
+Если проверка работоспособности после публикации не проходит, CI возвращает прежние
+версии и отмечает запуск как неуспешный. Для ручного отката можно выбрать прежнюю
+версию в Cloudflare → Worker → Deployments.

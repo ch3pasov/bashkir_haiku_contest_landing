@@ -1,0 +1,8 @@
+{
+  "repository": "ch3pasov/bashkir_haiku_contest_landing",
+  "account_id": "5af2ac3e2701b218d0ddd15aadd971e0",
+  "worker_name": "anatoliy-bashkir-haiku",
+  "production_url": "https://bashkirhaiku.anatoliy.ch",
+  "worker_dev_url": "https://anatoliy-bashkir-haiku.ana701iych.workers.dev",
+  "telegram_subscription": false
+}
