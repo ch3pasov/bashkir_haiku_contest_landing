@@ -67,6 +67,10 @@ function removeCloudflareProtection(bytes) {
     }));
 }
 async function verifyPublishedVersion(version) {
+  const domains = await api(`/accounts/${ci.account_id}/workers/domains`);
+  assert(domains.some(d => d.hostname === new URL(ci.production_url).hostname &&
+    d.service === ci.worker_name && d.environment === "production"), "Production domain is not bound to this Worker");
+  report.domain_binding_verified = true;
   const deployments = await api(prefix + "/deployments");
   assert(deployments.deployments[0].versions.some(v => v.version_id === version && v.percentage === 100));
   const root = ci.telegram_subscription ? path.resolve("../html") : path.resolve(config.assets.directory);
@@ -89,14 +93,25 @@ async function verifyPublishedVersion(version) {
     }
   }));
   const live = await response(ci.production_url + "/");
-  assert.equal(live.status, 200, "Production domain");
-  const liveBody = Buffer.from(await live.arrayBuffer());
-  const expected = readFileSync(path.join(root, "index.html"));
-  assert.equal(hash(removeCloudflareProtection(liveBody)), hash(expected), "Production page differs");
-  const missing = await response(ci.production_url + "/nonexistent-ci-check-7283");
+  // Cloudflare challenges datacenter IPs before the request reaches the Worker.
+  // Accept only its documented challenge marker, never an ordinary 403 error.
+  const challenged = live.status === 403 && live.headers.get("cf-mitigated") === "challenge";
+  report.production_check = { status: challenged ? "cloudflare_challenge" : "checked",
+    http_status: live.status, cf_ray: live.headers.get("cf-ray") };
+  if (challenged) {
+    console.log("Cloudflare challenged the GitHub runner; all original files verified through workers.dev and the production domain binding verified via Cloudflare API.");
+    await live.arrayBuffer();
+  } else {
+    assert.equal(live.status, 200, `Production domain (cf-mitigated=${live.headers.get("cf-mitigated")})`);
+    const liveBody = Buffer.from(await live.arrayBuffer());
+    const expected = readFileSync(path.join(root, "index.html"));
+    assert.equal(hash(removeCloudflareProtection(liveBody)), hash(expected), "Production page differs");
+  }
+  const checkOrigin = challenged ? ci.worker_dev_url : ci.production_url;
+  const missing = await response(checkOrigin + "/nonexistent-ci-check-7283");
   assert.equal(missing.status, 404);
   if (ci.telegram_subscription) {
-    const health = await response(ci.production_url + "/healthz");
+    const health = await response(checkOrigin + "/healthz");
     assert.equal(health.status, 200);
     const body = await health.json();
     assert(body.ok && body.subscription_configured, "Telegram secret is not configured");
@@ -172,7 +187,8 @@ try {
   if (process.env.GITHUB_STEP_SUMMARY) {
     writeFileSync(process.env.GITHUB_STEP_SUMMARY,
       `Published ${ci.production_url}\n\nCommit: ${commit}\n\nVersion: ${version}\n\n` +
-      `Verified ${report.assets.length} original files. Previous versions: ` +
+      `Verified ${report.assets.length} original files. Production check: ${report.production_check.status}. ` +
+      `Production domain binding verified through Cloudflare API. Previous versions: ` +
       report.previous_versions.map(v => `${v.version_id} (${v.percentage}%)`).join(", ") + "\n",
       { flag: "a" });
   }

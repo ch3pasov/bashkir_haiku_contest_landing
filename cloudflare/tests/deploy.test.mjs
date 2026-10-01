@@ -54,10 +54,12 @@ function execute(mode) {
         writeFileSync('state.json', JSON.stringify(state));
         if (u.host === 'api.cloudflare.com') {
           if (options.headers.Authorization !== 'Bearer synthetic-offline-only') throw Error('wrong synthetic auth');
+          if (u.pathname.endsWith('/domains')) return Response.json({success:true, result:[{hostname:'fixture.example', service:process.env.FIXTURE_MODE === 'wrong-domain' ? 'other-worker' : 'fixture-worker', environment:'production'}]});
           if (!u.pathname.endsWith('/deployments')) throw Error('unexpected API endpoint');
           return Response.json({success: true, result: {deployments: [{versions: state.versions}]}});
         }
         if (!['fixture.workers.dev', 'fixture.example'].includes(u.host)) throw Error('network forbidden');
+        if (u.host === 'fixture.example' && ['challenge', 'ordinary-forbidden'].includes(process.env.FIXTURE_MODE)) return new Response('forbidden', {status:403, headers:process.env.FIXTURE_MODE === 'challenge' ? {'cf-mitigated':'challenge','cf-ray':'fixture-ray'} : {}});
         if (u.pathname.includes('nonexistent-ci-check')) return new Response('missing', {status:404});
         if (process.env.FIXTURE_MODE === 'verification-failure' && u.host === 'fixture.example') return new Response('broken');
         const name = u.pathname === '/' ? 'index.html' : u.pathname.slice(1);
@@ -92,7 +94,8 @@ test('structured upload publishes exactly 100%, verifies binary assets and norma
   assert(state.calls[1].includes(version + '@100%'));
   assert.deepEqual(state.versions, [{version_id:version, percentage:100}]);
   assert(state.requests.every(r => r.method === 'GET'));
-  assert(!state.requests.some(r => /\/dns_records|\/routes|\/domains/.test(r.url)));
+  assert(!state.requests.some(r => /\/dns_records|\/routes/.test(r.url)));
+  assert.equal(report.domain_binding_verified, true);
 });
 
 test('failed upload never deploys and retains the previous production split', () => {
@@ -133,5 +136,32 @@ test('CLI failure before activation leaves existing deployment and avoids redund
   assert.equal(report.status, 'failed_before_activation');
   assert.match(report.verification_error, /Wrangler versions deploy failed/);
   assert.equal(state.calls.length, 2);
+  assert.deepEqual(state.versions, previous);
+});
+
+
+test('documented Cloudflare challenge preserves security and verifies origin files plus production binding', () => {
+  const {result, state, report} = execute('challenge');
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(report.status, 'verified');
+  assert.equal(report.production_check.status, 'cloudflare_challenge');
+  assert.equal(report.domain_binding_verified, true);
+  assert.equal(report.assets.length, 2);
+  assert(state.requests.some(r => r.url === 'https://fixture.workers.dev/nonexistent-ci-check-7283'));
+  assert.equal(state.calls.length, 2);
+});
+
+test('ordinary production 403 without challenge marker rolls back', () => {
+  const {result, state, report} = execute('ordinary-forbidden');
+  assert.notEqual(result.status, 0);
+  assert.equal(report.status, 'rolled_back');
+  assert.deepEqual(state.versions, previous);
+});
+
+test('production domain bound to another Worker causes rollback', () => {
+  const {result, state, report} = execute('wrong-domain');
+  assert.notEqual(result.status, 0);
+  assert.equal(report.status, 'rolled_back');
+  assert.match(report.verification_error, /Production domain is not bound/);
   assert.deepEqual(state.versions, previous);
 });
